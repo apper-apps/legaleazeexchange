@@ -401,8 +401,7 @@ const DocumentAnalysisPage = () => {
             </motion.div>
           </div>
         </section>
-
-        {/* Features Section */}
+{/* Features Section */}
         <section id="features" className="bg-white py-16 border-t border-primary-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div 
@@ -413,15 +412,14 @@ const DocumentAnalysisPage = () => {
               transition={{ duration: 0.6 }}
             >
               <h2 className="text-3xl font-bold text-primary-900 mb-4">
-                Why Choose Legaleaze?
+                Powerful Legal Document Analysis
               </h2>
               <p className="text-primary-600 max-w-2xl mx-auto">
-                We make legal documents accessible to everyone with advanced AI analysis 
-                and clear explanations.
+                Advanced AI capabilities to help you understand, analyze, and manage your legal documents with confidence.
               </p>
             </motion.div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
               <motion.div 
                 className="text-center p-6 rounded-xl bg-gradient-to-br from-accent-50 to-accent-100 border border-accent-200"
                 initial={{ opacity: 0, y: 20 }}
@@ -431,15 +429,34 @@ const DocumentAnalysisPage = () => {
               >
                 <div className="w-12 h-12 bg-gradient-to-br from-accent-500 to-accent-600 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <motion.div whileHover={{ scale: 1.1 }}>
-                    <span className="text-2xl">🚀</span>
+                    <ApperIcon name="FileText" className="w-6 h-6 text-white" />
                   </motion.div>
                 </div>
                 <h3 className="text-lg font-semibold text-primary-900 mb-2">
-                  Instant Analysis
+                  Document Type Support
                 </h3>
-                <p className="text-primary-600">
-                  Get your document analyzed in seconds, not hours. Upload and receive 
-                  immediate insights.
+                <p className="text-primary-600 text-sm">
+                  Analyze rental agreements, employment contracts, divorce documents, NDAs, and more with specialized recognition.
+                </p>
+              </motion.div>
+              
+              <motion.div 
+                className="text-center p-6 rounded-xl bg-gradient-to-br from-warning-50 to-warning-100 border border-warning-200"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-warning-500 to-warning-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <motion.div whileHover={{ scale: 1.1 }}>
+                    <ApperIcon name="AlertTriangle" className="w-6 h-6 text-white" />
+                  </motion.div>
+                </div>
+                <h3 className="text-lg font-semibold text-primary-900 mb-2">
+                  Smart Risk Detection
+                </h3>
+                <p className="text-primary-600 text-sm">
+                  Automatic identification of red flags, hidden fees, unfavorable terms, and potential legal risks in your documents.
                 </p>
               </motion.div>
               
@@ -448,19 +465,18 @@ const DocumentAnalysisPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
               >
                 <div className="w-12 h-12 bg-gradient-to-br from-success-500 to-success-600 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <motion.div whileHover={{ scale: 1.1 }}>
-                    <span className="text-2xl">💡</span>
+                    <ApperIcon name="Calendar" className="w-6 h-6 text-white" />
                   </motion.div>
                 </div>
                 <h3 className="text-lg font-semibold text-primary-900 mb-2">
-                  Plain English
+                  Deadline Management
                 </h3>
-                <p className="text-primary-600">
-                  Complex legal jargon translated into clear, understandable language 
-                  anyone can follow.
+                <p className="text-primary-600 text-sm">
+                  Extract important dates, deadlines, and milestones with automatic reminders to keep you on track.
                 </p>
               </motion.div>
               
@@ -469,19 +485,38 @@ const DocumentAnalysisPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.3 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
               >
                 <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <motion.div whileHover={{ scale: 1.1 }}>
-                    <span className="text-2xl">🔒</span>
+                    <ApperIcon name="Calculator" className="w-6 h-6 text-white" />
                   </motion.div>
                 </div>
                 <h3 className="text-lg font-semibold text-primary-900 mb-2">
-                  Secure & Private
+                  Financial Analysis
                 </h3>
-                <p className="text-primary-600">
-                  Your documents are processed securely and never stored. Complete 
-                  privacy guaranteed.
+                <p className="text-primary-600 text-sm">
+                  Automatic cost calculations, payment schedules, interest rates, and financial obligation breakdowns.
+                </p>
+              </motion.div>
+              
+              <motion.div 
+                className="text-center p-6 rounded-xl bg-gradient-to-br from-secondary-50 to-secondary-100 border border-secondary-200"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <motion.div whileHover={{ scale: 1.1 }}>
+                    <ApperIcon name="GitCompare" className="w-6 h-6 text-white" />
+                  </motion.div>
+                </div>
+                <h3 className="text-lg font-semibold text-primary-900 mb-2">
+                  Document Comparison
+                </h3>
+                <p className="text-primary-600 text-sm">
+                  Side-by-side comparison of contract versions, highlighting changes, additions, and key differences.
                 </p>
               </motion.div>
             </div>
