@@ -53,8 +53,229 @@ const DocumentAnalysisPage = () => {
             </motion.div>
           </div>
         </section>
+{/* The Problem Section */}
+        <section className="py-16 bg-gradient-to-br from-error-50 to-warning-50 border-b border-error-200">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-primary-900 mb-6">
+                The Problem
+              </h2>
+              <p className="text-xl text-primary-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+                Every day, millions of people sign legal documents they don't fully understand
+              </p>
+            </motion.div>
 
-{/* Call to Action Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="bg-white rounded-xl p-6 shadow-lg border border-error-200 hover:shadow-xl transition-all duration-300"
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-error-500 to-error-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">🏠</span>
+                </div>
+                <h3 className="font-semibold text-primary-900 mb-3 text-center">Hidden Lease Fees</h3>
+                <p className="text-primary-600 text-sm text-center">
+                  People sign rental agreements without understanding hidden fees, pet deposits, or early termination penalties
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="bg-white rounded-xl p-6 shadow-lg border border-warning-200 hover:shadow-xl transition-all duration-300"
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-warning-500 to-warning-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">💼</span>
+                </div>
+                <h3 className="font-semibold text-primary-900 mb-3 text-center">Employment Confusion</h3>
+                <p className="text-primary-600 text-sm text-center">
+                  Workers agree to employment terms that weren't what they thought, losing benefits or flexibility
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="bg-white rounded-xl p-6 shadow-lg border border-error-200 hover:shadow-xl transition-all duration-300"
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">📄</span>
+                </div>
+                <h3 className="font-semibold text-primary-900 mb-3 text-center">Divorce Overwhelm</h3>
+                <p className="text-primary-600 text-sm text-center">
+                  People feel overwhelmed by divorce paperwork, missing important rights or obligations
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="bg-white rounded-xl p-6 shadow-lg border border-warning-200 hover:shadow-xl transition-all duration-300"
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-accent-500 to-accent-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">💰</span>
+                </div>
+                <h3 className="font-semibold text-primary-900 mb-3 text-center">Expensive Explanations</h3>
+                <p className="text-primary-600 text-sm text-center">
+                  People pay lawyers hundreds of dollars just to explain what a document means
+                </p>
+              </motion.div>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="text-center mt-12"
+            >
+              <p className="text-lg text-primary-700 font-medium">
+                You worry you've missed something important, but hiring a lawyer feels too expensive for every document.
+              </p>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* The Solution Section */}
+        <section className="py-16 bg-gradient-to-br from-success-50 to-accent-50 border-b border-success-200">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-primary-900 mb-6">
+                The Solution
+              </h2>
+              <div className="bg-white rounded-2xl p-8 shadow-lg border border-success-200 max-w-4xl mx-auto mb-8">
+                <p className="text-2xl font-bold text-primary-900 mb-4">
+                  Legaleaze is like Google Translate, but for legal documents
+                </p>
+                <p className="text-lg text-primary-600 leading-relaxed">
+                  We instantly transform complex legal jargon into plain English that anyone can understand, 
+                  helping you make informed decisions with confidence.
+                </p>
+              </div>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="bg-white rounded-xl p-6 shadow-lg border border-success-200 hover:shadow-xl transition-all duration-300"
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-success-500 to-success-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">🔄</span>
+                </div>
+                <h3 className="text-lg font-semibold text-primary-900 mb-3 text-center">Instant Plain English</h3>
+                <p className="text-primary-600 text-center">
+                  Complex legal language translated into clear, simple terms you can actually understand
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="bg-white rounded-xl p-6 shadow-lg border border-error-200 hover:shadow-xl transition-all duration-300"
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-error-500 to-error-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">🚨</span>
+                </div>
+                <h3 className="text-lg font-semibold text-primary-900 mb-3 text-center">Red Flag Warnings</h3>
+                <p className="text-primary-600 text-center">
+                  Automatic alerts for unfavorable terms, hidden fees, and clauses that could hurt you
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="bg-white rounded-xl p-6 shadow-lg border border-accent-200 hover:shadow-xl transition-all duration-300"
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-accent-500 to-accent-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">📅</span>
+                </div>
+                <h3 className="text-lg font-semibold text-primary-900 mb-3 text-center">Key Dates</h3>
+                <p className="text-primary-600 text-center">
+                  Important deadlines, cancellation periods, and renewal dates highlighted so you never miss them
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="bg-white rounded-xl p-6 shadow-lg border border-warning-200 hover:shadow-xl transition-all duration-300"
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-warning-500 to-warning-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">💵</span>
+                </div>
+                <h3 className="text-lg font-semibold text-primary-900 mb-3 text-center">Financial Breakdown</h3>
+                <p className="text-primary-600 text-center">
+                  Clear summary of all costs, fees, penalties, and financial obligations in simple terms
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                className="bg-white rounded-xl p-6 shadow-lg border border-primary-200 hover:shadow-xl transition-all duration-300"
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">⚖️</span>
+                </div>
+                <h3 className="text-lg font-semibold text-primary-900 mb-3 text-center">Your Rights Explained</h3>
+                <p className="text-primary-600 text-center">
+                  Clear explanations of your rights, protections, and what you can and cannot do
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="bg-white rounded-xl p-6 shadow-lg border border-success-200 hover:shadow-xl transition-all duration-300"
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-success-500 to-success-600 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">✨</span>
+                </div>
+                <h3 className="text-lg font-semibold text-primary-900 mb-3 text-center">Confidence to Sign</h3>
+                <p className="text-primary-600 text-center">
+                  Make informed decisions with complete understanding, no more signing blindly
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Call to Action Section */}
         <section className="py-16 bg-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <motion.div
