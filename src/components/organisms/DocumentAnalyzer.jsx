@@ -69,78 +69,118 @@ const DocumentAnalyzer = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Upload Section */}
-        <div className="space-y-6">
-          <div>
-            <h2 className="text-2xl font-bold text-primary-900 mb-2">
-              Upload Document
-            </h2>
-            <p className="text-primary-600">
-              Upload your legal document to get a plain English analysis
-            </p>
-          </div>
-          
-          {!uploadedFile ? (
-            <FileUpload
-              onFileSelect={handleFileSelect}
-              acceptedTypes={acceptedTypes}
-              maxSize={maxSize}
-            />
-          ) : (
-            <FilePreview
-              file={uploadedFile}
-              onRemove={handleRemoveFile}
-            />
-          )}
+<div className="max-w-4xl mx-auto space-y-8">
+        {/* Header Section */}
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-primary-900 mb-3">
+            Document Analysis
+          </h2>
+          <p className="text-lg text-primary-600 max-w-2xl mx-auto">
+            Upload your legal document to get a plain English analysis that breaks down complex terms and clauses
+          </p>
         </div>
 
-        {/* Analysis Section */}
+        {/* Main Content Area */}
         <div className="space-y-6">
-          <div>
-            <h2 className="text-2xl font-bold text-primary-900 mb-2">
-              Document Analysis
-            </h2>
-            <p className="text-primary-600">
-              Plain English explanation of your legal document
-            </p>
-          </div>
-          
-          <div className="min-h-[400px]">
-            {loading && <Loading />}
-            
-            {error && !loading && (
+          {/* Upload Section - Show when no file or when file is uploaded but no analysis yet */}
+          {(!uploadedFile || (uploadedFile && !analysis && !loading)) && (
+            <motion.div 
+              className="space-y-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              {!uploadedFile ? (
+                <div className="bg-white rounded-xl border-2 border-dashed border-primary-200 p-8">
+                  <FileUpload
+                    onFileSelect={handleFileSelect}
+                    acceptedTypes={acceptedTypes}
+                    maxSize={maxSize}
+                  />
+                </div>
+              ) : (
+                <div className="bg-white rounded-xl border border-primary-200 p-6 shadow-sm">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-xl font-semibold text-primary-900">
+                      Uploaded Document
+                    </h3>
+                  </div>
+                  <FilePreview
+                    file={uploadedFile}
+                    onRemove={handleRemoveFile}
+                  />
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* Loading State */}
+          {loading && (
+            <motion.div 
+              className="bg-white rounded-xl border border-primary-200 p-8 shadow-sm"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="text-center mb-6">
+                <h3 className="text-xl font-semibold text-primary-900 mb-2">
+                  Analyzing Your Document
+                </h3>
+                <p className="text-primary-600">
+                  Please wait while we break down your document into plain English...
+                </p>
+              </div>
+              <Loading />
+            </motion.div>
+          )}
+
+          {/* Error State */}
+          {error && !loading && (
+            <motion.div 
+              className="bg-white rounded-xl border border-error-200 p-8 shadow-sm"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
               <Error 
                 message={error}
                 onRetry={handleRetry}
               />
-            )}
-            
-            {!uploadedFile && !loading && !error && (
-              <Empty 
-                title="No Document Uploaded"
-                description="Upload a legal document to see its plain English analysis here."
-                actionLabel="Upload Document"
-                onAction={() => {}}
-              />
-            )}
-            
-            {analysis && !loading && !error && (
-              <motion.div 
-                className="space-y-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="bg-gradient-to-r from-success-50 to-success-100 rounded-lg p-4 border border-success-200 mb-6">
-                  <h3 className="text-lg font-semibold text-success-800 mb-2">
-                    Analysis Complete!
-                  </h3>
-                  <p className="text-success-700">
-                    We've broken down your document into key sections with plain English explanations.
-                  </p>
+            </motion.div>
+          )}
+
+          {/* Analysis Results */}
+          {analysis && !loading && !error && (
+            <motion.div 
+              className="space-y-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              {/* Success Header */}
+              <div className="bg-gradient-to-r from-success-50 to-success-100 rounded-xl p-6 border border-success-200 shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xl font-semibold text-success-800 mb-2">
+                      Analysis Complete!
+                    </h3>
+                    <p className="text-success-700">
+                      We've broken down your document into key sections with plain English explanations.
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <button
+                      onClick={handleRemoveFile}
+                      className="text-sm text-success-700 hover:text-success-800 underline"
+                    >
+                      Analyze New Document
+                    </button>
+                  </div>
                 </div>
-                
+              </div>
+
+              {/* Analysis Sections */}
+              <div className="space-y-4">
                 {analysis.sections.map((section, index) => (
                   <AnalysisSection
                     key={index}
@@ -148,9 +188,9 @@ const DocumentAnalyzer = () => {
                     index={index}
                   />
                 ))}
-              </motion.div>
-            )}
-          </div>
+              </div>
+            </motion.div>
+          )}
         </div>
       </div>
     </div>
