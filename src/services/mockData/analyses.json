@@ -1,0 +1,46 @@
+[
+  {
+    "documentId": 1,
+    "sections": [
+      {
+        "title": "Payment Terms",
+        "originalText": "The Party of the Second Part shall remit payment in the amount of Five Thousand Dollars ($5,000) within thirty (30) days of the execution of this Agreement, with subsequent payments due on the first day of each calendar month thereafter.",
+        "explanation": "You need to pay $5,000 within 30 days of signing this contract. After that, you'll need to make monthly payments on the 1st of each month.",
+        "importance": "high"
+      },
+      {
+        "title": "Termination Clause",
+        "originalText": "Either party may terminate this Agreement with ninety (90) days written notice to the other party. Upon termination, all obligations shall cease except those specifically stated to survive termination.",
+        "explanation": "Either you or the other party can end this contract by giving 90 days' written notice. When the contract ends, most obligations stop, except for specific ones that are meant to continue even after termination.",
+        "importance": "high"
+      },
+      {
+        "title": "Liability Limitation",
+        "originalText": "In no event shall either party be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, or use, regardless of the theory of liability.",
+        "explanation": "Neither party can be held responsible for indirect damages like lost profits or data. This means if something goes wrong, you can only claim direct damages, not broader business losses.",
+        "importance": "medium"
+      },
+      {
+        "title": "Governing Law",
+        "originalText": "This Agreement shall be governed by and construed in accordance with the laws of the State of California, without regard to its conflict of laws principles.",
+        "explanation": "If there's ever a legal dispute about this contract, California state law will be used to resolve it, regardless of where the parties are located.",
+        "importance": "low"
+      },
+      {
+        "title": "Force Majeure",
+        "originalText": "Neither party shall be liable for any failure or delay in performance under this Agreement which is due to fire, flood, earthquake, elements of nature or acts of God, acts of war, terrorism, riots, civil disorders, rebellions or revolutions, or any other cause beyond the reasonable control of such party.",
+        "explanation": "If either party can't fulfill their obligations due to natural disasters, wars, or other events beyond their control, they won't be held responsible for the delay or failure to perform.",
+        "importance": "low"
+      }
+    ],
+    "plainEnglish": "This contract involves monthly payments starting with $5,000 upfront, can be ended by either party with 90 days notice, limits liability to direct damages only, uses California law for disputes, and excuses performance during major disasters or uncontrollable events.",
+    "keyTerms": [
+      "Payment Terms",
+      "Termination",
+      "Liability",
+      "Governing Law",
+      "Force Majeure"
+    ],
+    "timestamp": "2024-01-15T10:35:00.000Z"
+  }
+]

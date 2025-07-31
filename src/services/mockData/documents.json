@@ -1,0 +1,18 @@
+[
+  {
+    "Id": 1,
+    "name": "sample-contract.pdf",
+    "size": 2457600,
+    "type": "application/pdf",
+    "uploadDate": "2024-01-15T10:30:00.000Z",
+    "status": "analyzed"
+  },
+  {
+    "Id": 2,
+    "name": "lease-agreement.docx",
+    "size": 1843200,
+    "type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "uploadDate": "2024-01-14T14:20:00.000Z",
+    "status": "uploaded"
+  }
+]
