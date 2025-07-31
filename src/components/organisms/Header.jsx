@@ -50,13 +50,12 @@ const Header = () => {
             >
               Contact
             </a>
-            <Button 
+<Button 
               variant="primary" 
               size="sm"
               className="ml-4"
               onClick={() => {
-                // TODO: Implement sign in functionality
-                console.log('Sign in clicked');
+                window.location.href = '/signin';
               }}
             >
               Sign In

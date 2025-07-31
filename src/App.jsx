@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import DocumentAnalysisPage from "@/components/pages/DocumentAnalysisPage";
+import SignInPage from "@/components/pages/SignInPage";
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <div className="min-h-screen bg-gray-50">
         <Routes>
           <Route path="/" element={<DocumentAnalysisPage />} />
+          <Route path="/signin" element={<SignInPage />} />
         </Routes>
         <ToastContainer
           position="top-right"
