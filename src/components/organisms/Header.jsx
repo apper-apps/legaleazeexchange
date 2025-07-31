@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
+import React from "react";
 import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
 
 const Header = () => {
   return (
@@ -29,7 +31,7 @@ const Header = () => {
             </div>
           </div>
           
-          <nav className="hidden md:flex items-center space-x-6">
+<nav className="hidden md:flex items-center space-x-6">
             <a 
               href="#features" 
               className="text-primary-600 hover:text-primary-900 transition-colors duration-200 font-medium"
@@ -48,6 +50,17 @@ const Header = () => {
             >
               Contact
             </a>
+            <Button 
+              variant="primary" 
+              size="sm"
+              className="ml-4"
+              onClick={() => {
+                // TODO: Implement sign in functionality
+                console.log('Sign in clicked');
+              }}
+            >
+              Sign In
+            </Button>
           </nav>
         </div>
       </div>
