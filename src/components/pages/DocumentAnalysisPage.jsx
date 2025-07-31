@@ -337,7 +337,7 @@ const DocumentAnalysisPage = () => {
                 <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl">⚖️</span>
                 </div>
-                <h3 className="text-lg font-semibold text-primary-900 mb-3 text-center">Your Rights Explained</h3>
+<h3 className="text-lg font-semibold text-primary-900 mb-3 text-center">Your Rights Explained</h3>
                 <p className="text-primary-600 text-center">
                   Clear explanations of your rights, protections, and what you can and cannot do
                 </p>
@@ -362,6 +362,185 @@ const DocumentAnalysisPage = () => {
           </div>
         </section>
 
+        {/* Pricing Section */}
+        <section id="pricing" className="py-16 bg-primary-50">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-primary-900 mb-6">
+                Choose Your Plan
+              </h2>
+              <p className="text-lg text-primary-600 max-w-2xl mx-auto">
+                Start free and upgrade as your needs grow. No hidden fees. Cancel anytime. We practice what we preach.
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              {/* Free Forever Plan */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="bg-white rounded-xl p-8 shadow-lg border border-primary-200 hover:shadow-xl transition-all duration-300"
+              >
+                <div className="text-center mb-6">
+                  <h3 className="text-xl font-bold text-primary-900 mb-2">Free Forever</h3>
+                  <div className="mb-4">
+                    <span className="text-4xl font-bold text-primary-900">$0</span>
+                    <span className="text-primary-600 ml-2">forever</span>
+                  </div>
+                  <p className="text-primary-600">Perfect for trying us out</p>
+                </div>
+                
+                <ul className="space-y-3 mb-8">
+                  <li className="flex items-center">
+                    <ApperIcon name="Check" size={16} className="text-success-500 mr-3 flex-shrink-0" />
+                    <span className="text-primary-700">2 documents per month</span>
+                  </li>
+                  <li className="flex items-center">
+                    <ApperIcon name="Check" size={16} className="text-success-500 mr-3 flex-shrink-0" />
+                    <span className="text-primary-700">Basic translation</span>
+                  </li>
+                  <li className="flex items-center">
+                    <ApperIcon name="Check" size={16} className="text-success-500 mr-3 flex-shrink-0" />
+                    <span className="text-primary-700">Red flag detection</span>
+                  </li>
+                </ul>
+
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => window.location.href = '/signin'}
+                >
+                  Get Started Free
+                </Button>
+              </motion.div>
+
+              {/* Personal Plan - Most Popular */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="bg-white rounded-xl p-8 shadow-xl border-2 border-accent-500 hover:shadow-2xl transition-all duration-300 relative"
+              >
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-gradient-to-r from-accent-500 to-accent-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                    Most Popular
+                  </span>
+                </div>
+                
+                <div className="text-center mb-6">
+                  <h3 className="text-xl font-bold text-primary-900 mb-2">Personal</h3>
+                  <div className="mb-4">
+                    <span className="text-4xl font-bold text-primary-900">$24.99</span>
+                    <span className="text-primary-600 ml-2">/month</span>
+                  </div>
+                  <p className="text-primary-600">Everything you need for personal use</p>
+                </div>
+                
+                <ul className="space-y-3 mb-8">
+                  <li className="flex items-center">
+                    <ApperIcon name="Check" size={16} className="text-success-500 mr-3 flex-shrink-0" />
+                    <span className="text-primary-700">Unlimited documents</span>
+                  </li>
+                  <li className="flex items-center">
+                    <ApperIcon name="Check" size={16} className="text-success-500 mr-3 flex-shrink-0" />
+                    <span className="text-primary-700">Advanced risk analysis</span>
+                  </li>
+                  <li className="flex items-center">
+                    <ApperIcon name="Check" size={16} className="text-success-500 mr-3 flex-shrink-0" />
+                    <span className="text-primary-700">Deadline tracking</span>
+                  </li>
+                  <li className="flex items-center">
+                    <ApperIcon name="Check" size={16} className="text-success-500 mr-3 flex-shrink-0" />
+                    <span className="text-primary-700">Priority support</span>
+                  </li>
+                  <li className="flex items-center">
+                    <ApperIcon name="Check" size={16} className="text-success-500 mr-3 flex-shrink-0" />
+                    <span className="text-primary-700">All Free features</span>
+                  </li>
+                </ul>
+
+                <Button
+                  variant="primary"
+                  className="w-full"
+                  onClick={() => window.location.href = '/signin'}
+                >
+                  Start Personal Plan
+                </Button>
+              </motion.div>
+
+              {/* Family Plan */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="bg-white rounded-xl p-8 shadow-lg border border-primary-200 hover:shadow-xl transition-all duration-300"
+              >
+                <div className="text-center mb-6">
+                  <h3 className="text-xl font-bold text-primary-900 mb-2">Family</h3>
+                  <div className="mb-4">
+                    <span className="text-4xl font-bold text-primary-900">$39.99</span>
+                    <span className="text-primary-600 ml-2">/month</span>
+                  </div>
+                  <p className="text-primary-600">Complete family legal protection</p>
+                </div>
+                
+                <ul className="space-y-3 mb-8">
+                  <li className="flex items-center">
+                    <ApperIcon name="Check" size={16} className="text-success-500 mr-3 flex-shrink-0" />
+                    <span className="text-primary-700">Everything in Personal</span>
+                  </li>
+                  <li className="flex items-center">
+                    <ApperIcon name="Check" size={16} className="text-success-500 mr-3 flex-shrink-0" />
+                    <span className="text-primary-700">Divorce/custody features</span>
+                  </li>
+                  <li className="flex items-center">
+                    <ApperIcon name="Check" size={16} className="text-success-500 mr-3 flex-shrink-0" />
+                    <span className="text-primary-700">Child support calculator</span>
+                  </li>
+                  <li className="flex items-center">
+                    <ApperIcon name="Check" size={16} className="text-success-500 mr-3 flex-shrink-0" />
+                    <span className="text-primary-700">Custody calendar</span>
+                  </li>
+                  <li className="flex items-center">
+                    <ApperIcon name="Check" size={16} className="text-success-500 mr-3 flex-shrink-0" />
+                    <span className="text-primary-700">Family document sharing</span>
+                  </li>
+                </ul>
+
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => window.location.href = '/signin'}
+                >
+                  Start Family Plan
+                </Button>
+              </motion.div>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="text-center mt-12"
+            >
+              <p className="text-primary-600 font-medium">
+                No hidden fees. Cancel anytime. We practice what we preach.
+              </p>
+            </motion.div>
+          </div>
+        </section>
+
         {/* Call to Action Section */}
         <section className="py-16 bg-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -382,7 +561,7 @@ const DocumentAnalysisPage = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <Button 
-                  size="lg" 
+                  size="lg"
                   className="bg-gradient-to-r from-accent-600 to-accent-500 hover:from-accent-700 hover:to-accent-600 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
                   onClick={() => {
                     // Scroll to upload section or navigate to analyzer

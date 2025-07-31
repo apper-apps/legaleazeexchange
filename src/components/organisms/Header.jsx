@@ -45,12 +45,18 @@ const Header = () => {
               About
             </a>
             <a 
+              href="#pricing" 
+              className="text-primary-600 hover:text-primary-900 transition-colors duration-200 font-medium"
+            >
+              Pricing
+            </a>
+            <a 
               href="#contact" 
               className="text-primary-600 hover:text-primary-900 transition-colors duration-200 font-medium"
             >
               Contact
             </a>
-<Button 
+            <Button 
               variant="primary" 
               size="sm"
               className="ml-4"
