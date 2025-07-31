@@ -38,18 +38,46 @@ const DocumentAnalyzer = () => {
     await analyzeDocument(file);
   };
 
-  const analyzeDocument = async (file) => {
+const analyzeDocument = async (file) => {
     setLoading(true);
     setError("");
     
     try {
+      console.log("Starting document upload...");
       const document = await documentService.uploadDocument(file);
-      const analysisResult = await documentService.analyzeDocument(document.id);
+      
+      if (!document || !document.Id) {
+        throw new Error("Document upload failed - invalid document returned");
+      }
+      
+      console.log("Document uploaded successfully:", document);
+      console.log("Starting document analysis...");
+      
+      const analysisResult = await documentService.analyzeDocument(document.Id);
+      
+      if (!analysisResult) {
+        throw new Error("Analysis failed - no results returned");
+      }
+      
+      console.log("Analysis completed successfully:", analysisResult);
       setAnalysis(analysisResult);
       toast.success("Document analyzed successfully!");
     } catch (err) {
-      setError("Failed to analyze document. Please try again.");
-      toast.error("Analysis failed. Please try again.");
+      console.error("Document analysis error:", err);
+      
+      // Provide user-friendly error messages based on error type
+      let errorMessage = "Failed to analyze document. Please try again.";
+      
+      if (err.message.includes("upload")) {
+        errorMessage = "Failed to upload document. Please check your file and try again.";
+      } else if (err.message.includes("analysis") || err.message.includes("analyze")) {
+        errorMessage = "Failed to analyze document. Our system may be busy - please try again.";
+      } else if (err.message.includes("network") || err.message.includes("fetch")) {
+        errorMessage = "Network error. Please check your connection and try again.";
+      }
+      
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
