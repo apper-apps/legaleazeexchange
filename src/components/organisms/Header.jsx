@@ -1,8 +1,8 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
-const Header = () => {
+const Header = ({ user }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -13,10 +13,13 @@ const Header = () => {
     setIsMobileMenuOpen(false);
   };
 
+  // Show different header based on whether user data is provided (dashboard vs marketing)
+  const isDashboard = Boolean(user);
+
   return (
     <>
     <motion.header
-      className="bg-white border-b border-primary-200 shadow-sm"
+      className="bg-white border-b border-gray-200 shadow-sm"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -25,21 +28,52 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center space-x-3">
             <motion.div 
-              className="w-10 h-10 bg-gradient-to-br from-accent-500 to-accent-600 rounded-lg flex items-center justify-center"
+              className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.2 }}
             >
               <ApperIcon name="Scale" className="w-6 h-6 text-white" />
             </motion.div>
-<div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-primary-900 to-primary-700 bg-clip-text text-transparent">
+            <div>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">
                 Legaleaze
               </h1>
-              <p className="text-sm text-primary-600 -mt-1">
-                Sign with confidence
-              </p>
+              {!isDashboard && (
+                <p className="text-sm text-gray-600 -mt-1">
+                  Sign with confidence
+                </p>
+              )}
             </div>
           </div>
+
+          {/* Dashboard Header - User Info */}
+          {isDashboard && user && (
+            <div className="flex items-center space-x-4">
+              {/* Subscription Badge */}
+              <div className="hidden sm:block">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                  {user.plan}
+                </span>
+              </div>
+
+              {/* User Avatar */}
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center">
+                  <span className="text-sm font-medium text-gray-700">
+                    {user.initials}
+                  </span>
+                </div>
+                <div className="hidden sm:block">
+                  <p className="text-sm font-medium text-gray-900">{user.name}</p>
+                  <p className="text-xs text-gray-500">{user.email}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Marketing Header - Navigation */}
+          {!isDashboard && (
+            <>
 {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
             <a 
@@ -88,10 +122,12 @@ const Header = () => {
               name={isMobileMenuOpen ? "X" : "Menu"} 
               size={24} 
               className="text-primary-600"
-            />
+/>
           </button>
+            </>
+          )}
         </div>
-</div>
+      </div>
     </motion.header>
 
     {/* Mobile Menu Overlay */}
