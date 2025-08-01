@@ -44,8 +44,8 @@ const FilePreview = ({ file, onRemove, className }) => {
             </div>
             
             <div className="flex-1 min-w-0">
-              <h4 className="text-sm font-semibold text-primary-900 truncate">
-                {file.name}
+<h4 className="text-sm font-semibold text-primary-900 truncate">
+                {file.Name || file.name}
               </h4>
               <div className="flex items-center space-x-2 mt-1">
                 <Badge variant="info" size="sm">
@@ -56,7 +56,7 @@ const FilePreview = ({ file, onRemove, className }) => {
                 </span>
               </div>
               <p className="text-xs text-primary-600 mt-1">
-                Uploaded {new Date().toLocaleString()}
+                Uploaded {file.uploadDate ? new Date(file.uploadDate).toLocaleString() : new Date().toLocaleString()}
               </p>
             </div>
           </div>

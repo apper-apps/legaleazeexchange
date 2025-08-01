@@ -1,23 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { documentService } from "@/services/api/documentService";
 import ChatArea from "@/components/organisms/ChatArea";
 import DocumentAnalyzer from "@/components/organisms/DocumentAnalyzer";
 import Header from "@/components/organisms/Header";
 import ConversationList from "@/components/organisms/ConversationList";
-
+import { AuthContext } from "../../App";
 const DashboardPage = () => {
+const navigate = useNavigate();
+  const { logout } = useContext(AuthContext);
+  const { user, isAuthenticated } = useSelector((state) => state.user);
   const [conversations, setConversations] = useState([]);
   const [currentConversation, setCurrentConversation] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   
-  // Mock user data
-  const mockUser = {
-    name: "Rajesh Berry",
-    initials: "RB",
-    plan: "Pro plan"
-  };
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+  }, [isAuthenticated, navigate]);
 
+  // Prepare user data for display
+  const displayUser = user ? {
+    name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.Name || 'User',
+    initials: user.firstName && user.lastName 
+      ? `${user.firstName[0]}${user.lastName[0]}`.toUpperCase()
+      : user.Name 
+        ? user.Name.split(' ').map(n => n[0]).join('').toUpperCase()
+        : 'U',
+    plan: "Pro plan",
+    email: user.email || user.emailAddress
+  } : null;
   useEffect(() => {
     // Simulate loading conversations
     const loadConversations = async () => {
@@ -99,6 +116,11 @@ const DashboardPage = () => {
     }
   };
 
+// Don't render if not authenticated
+  if (!isAuthenticated || !displayUser) {
+    return null;
+  }
+
   return (
     <div className="legaleaze-dashboard">
       {/* Sidebar */}
@@ -108,7 +130,8 @@ const DashboardPage = () => {
           activeConversation={currentConversation}
           onConversationSelect={handleConversationSelect}
           onNewDocumentAnalysis={handleNewDocumentAnalysis}
-          user={mockUser}
+          user={displayUser}
+          onLogout={logout}
         />
       </div>
 

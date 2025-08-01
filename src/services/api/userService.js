@@ -1,149 +1,315 @@
 import { toast } from 'react-toastify';
 
-// Mock user data storage
-let users = [
-  {
-    Id: 1,
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john@example.com',
-    telephone: '+1 (555) 123-4567',
-    password: 'password123',
-    createdAt: new Date('2024-01-15').toISOString()
-  },
-  {
-    Id: 2,
-    firstName: 'Jane',
-    lastName: 'Smith',
-    email: 'jane@example.com',
-    telephone: '+1 (555) 987-6543',
-    password: 'password456',
-    createdAt: new Date('2024-02-10').toISOString()
+class UserService {
+  constructor() {
+    this.initializeApperClient();
   }
-];
 
-let nextId = 3;
-
-// Simulate API delay
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-export const userService = {
-  // Sign in user
-  async signIn(email, password) {
-    await delay(800);
-    
-    const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-    
-    if (!user) {
-      throw new Error('User not found with this email address');
+  // Initialize ApperClient
+  initializeApperClient() {
+    try {
+      if (typeof window !== 'undefined' && window.ApperSDK) {
+        const { ApperClient } = window.ApperSDK;
+        this.apperClient = new ApperClient({
+          apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+          apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+        });
+      }
+    } catch (error) {
+      console.warn('ApperClient initialization failed:', error);
     }
-    
-    if (user.password !== password) {
-      throw new Error('Invalid password');
-    }
-    
-    // Return user without password
-    const { password: _, ...userWithoutPassword } = user;
-    return userWithoutPassword;
-  },
+  }
 
-  // Sign up new user
-  async signUp(userData) {
-    await delay(1000);
-    
-    // Check if email already exists
-    const existingUser = users.find(u => u.email.toLowerCase() === userData.email.toLowerCase());
-    if (existingUser) {
-      throw new Error('An account with this email already exists');
-    }
-    
-    // Create new user
-    const newUser = {
-      Id: nextId++,
-      firstName: userData.firstName.trim(),
-      lastName: userData.lastName.trim(),
-      email: userData.email.toLowerCase().trim(),
-      telephone: userData.telephone.trim(),
-      password: userData.password,
-      createdAt: new Date().toISOString()
-    };
-    
-    users.push(newUser);
-    
-    // Return user without password
-    const { password: _, ...userWithoutPassword } = newUser;
-    return userWithoutPassword;
-  },
-
-  // Get all users (for admin purposes)
+  // Get all users
   async getAll() {
-    await delay(300);
-    return users.map(({ password: _, ...user }) => user);
-  },
+    try {
+      const params = {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "Tags" } },
+          { field: { Name: "Owner" } },
+          { field: { Name: "firstName" } },
+          { field: { Name: "lastName" } },
+          { field: { Name: "email" } },
+          { field: { Name: "telephone" } },
+          { field: { Name: "createdAt" } }
+        ],
+        orderBy: [
+          {
+            fieldName: "createdAt",
+            sorttype: "DESC"
+          }
+        ],
+        pagingInfo: {
+          limit: 100,
+          offset: 0
+        }
+      };
+
+      const response = await this.apperClient.fetchRecords('app_User', params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return [];
+      }
+
+      return response.data || [];
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error fetching users:", error?.response?.data?.message);
+      } else {
+        console.error(error.message);
+      }
+      return [];
+    }
+  }
 
   // Get user by ID
   async getById(id) {
-    await delay(200);
-    
-    if (!Number.isInteger(id) || id <= 0) {
-      throw new Error('Invalid user ID');
+    try {
+      const params = {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "Tags" } },
+          { field: { Name: "Owner" } },
+          { field: { Name: "firstName" } },
+          { field: { Name: "lastName" } },
+          { field: { Name: "email" } },
+          { field: { Name: "telephone" } },
+          { field: { Name: "createdAt" } }
+        ]
+      };
+
+      const response = await this.apperClient.getRecordById('app_User', id, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        return null;
+      }
+
+      return response.data;
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error(`Error fetching user with ID ${id}:`, error?.response?.data?.message);
+      } else {
+        console.error(error.message);
+      }
+      return null;
     }
-    
-    const user = users.find(u => u.Id === id);
-    if (!user) {
-      throw new Error('User not found');
+  }
+
+  // Create user (sign up)
+  async signUp(userData) {
+    try {
+      const params = {
+        records: [
+          {
+            Name: `${userData.firstName} ${userData.lastName}`,
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            email: userData.email,
+            telephone: userData.telephone,
+            password: userData.password,
+            createdAt: new Date().toISOString()
+          }
+        ]
+      };
+
+      const response = await this.apperClient.createRecord('app_User', params);
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const successfulRecords = response.results.filter(result => result.success);
+        const failedRecords = response.results.filter(result => !result.success);
+
+        if (failedRecords.length > 0) {
+          console.error(`Failed to create user ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
+          
+          failedRecords.forEach(record => {
+            record.errors?.forEach(error => {
+              toast.error(`${error.fieldLabel}: ${error.message}`);
+            });
+            if (record.message) toast.error(record.message);
+          });
+          
+          throw new Error('Failed to create user account');
+        }
+
+        if (successfulRecords.length > 0) {
+          const newUser = successfulRecords[0].data;
+          // Remove password from response
+          const { password: _, ...userWithoutPassword } = newUser;
+          return userWithoutPassword;
+        }
+      }
+
+      throw new Error('Failed to create user account');
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error creating user:", error?.response?.data?.message);
+        throw new Error(error?.response?.data?.message);
+      } else {
+        console.error(error.message);
+        throw error;
+      }
     }
-    
-    const { password: _, ...userWithoutPassword } = user;
-    return userWithoutPassword;
-  },
+  }
+
+  // Sign in user
+  async signIn(email, password) {
+    try {
+      const params = {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "firstName" } },
+          { field: { Name: "lastName" } },
+          { field: { Name: "email" } },
+          { field: { Name: "telephone" } },
+          { field: { Name: "password" } },
+          { field: { Name: "createdAt" } }
+        ],
+        where: [
+          {
+            FieldName: "email",
+            Operator: "EqualTo",
+            Values: [email.toLowerCase()]
+          }
+        ]
+      };
+
+      const response = await this.apperClient.fetchRecords('app_User', params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+
+      const users = response.data || [];
+      
+      if (users.length === 0) {
+        throw new Error('User not found with this email address');
+      }
+
+      const user = users[0];
+      
+      if (user.password !== password) {
+        throw new Error('Invalid password');
+      }
+
+      // Return user without password
+      const { password: _, ...userWithoutPassword } = user;
+      return userWithoutPassword;
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error signing in user:", error?.response?.data?.message);
+        throw new Error(error?.response?.data?.message);
+      } else {
+        console.error(error.message);
+        throw error;
+      }
+    }
+  }
 
   // Update user
   async update(id, userData) {
-    await delay(500);
-    
-    if (!Number.isInteger(id) || id <= 0) {
-      throw new Error('Invalid user ID');
-    }
-    
-    const userIndex = users.findIndex(u => u.Id === id);
-    if (userIndex === -1) {
-      throw new Error('User not found');
-    }
-    
-    // Check if email is being changed and if it conflicts
-    if (userData.email && userData.email !== users[userIndex].email) {
-      const emailExists = users.some(u => u.Id !== id && u.email.toLowerCase() === userData.email.toLowerCase());
-      if (emailExists) {
-        throw new Error('Email is already in use by another account');
+    try {
+      const params = {
+        records: [
+          {
+            Id: id,
+            ...userData
+          }
+        ]
+      };
+
+      const response = await this.apperClient.updateRecord('app_User', params);
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return null;
       }
+
+      if (response.results) {
+        const successfulUpdates = response.results.filter(result => result.success);
+        const failedUpdates = response.results.filter(result => !result.success);
+
+        if (failedUpdates.length > 0) {
+          console.error(`Failed to update user ${failedUpdates.length} records:${JSON.stringify(failedUpdates)}`);
+          
+          failedUpdates.forEach(record => {
+            record.errors?.forEach(error => {
+              toast.error(`${error.fieldLabel}: ${error.message}`);
+            });
+            if (record.message) toast.error(record.message);
+          });
+        }
+
+        if (successfulUpdates.length > 0) {
+          const updatedUser = successfulUpdates[0].data;
+          // Remove password from response
+          const { password: _, ...userWithoutPassword } = updatedUser;
+          return userWithoutPassword;
+        }
+      }
+
+      return null;
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error updating user:", error?.response?.data?.message);
+      } else {
+        console.error(error.message);
+      }
+      return null;
     }
-    
-    // Update user
-    users[userIndex] = {
-      ...users[userIndex],
-      ...userData,
-      Id: id // Ensure ID doesn't change
-    };
-    
-    const { password: _, ...userWithoutPassword } = users[userIndex];
-    return userWithoutPassword;
-  },
+  }
 
   // Delete user
   async delete(id) {
-    await delay(300);
-    
-    if (!Number.isInteger(id) || id <= 0) {
-      throw new Error('Invalid user ID');
+    try {
+      const params = {
+        RecordIds: [id]
+      };
+
+      const response = await this.apperClient.deleteRecord('app_User', params);
+
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return false;
+      }
+
+      if (response.results) {
+        const successfulDeletions = response.results.filter(result => result.success);
+        const failedDeletions = response.results.filter(result => !result.success);
+
+        if (failedDeletions.length > 0) {
+          console.error(`Failed to delete user ${failedDeletions.length} records:${JSON.stringify(failedDeletions)}`);
+          
+          failedDeletions.forEach(record => {
+            if (record.message) toast.error(record.message);
+          });
+        }
+
+        return successfulDeletions.length > 0;
+      }
+
+      return false;
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error deleting user:", error?.response?.data?.message);
+      } else {
+        console.error(error.message);
+      }
+      return false;
     }
-    
-    const userIndex = users.findIndex(u => u.Id === id);
-    if (userIndex === -1) {
-      throw new Error('User not found');
-    }
-    
-    users.splice(userIndex, 1);
-    return true;
   }
-};
+}
+
+export const userService = new UserService();

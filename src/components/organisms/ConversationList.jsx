@@ -10,7 +10,8 @@ const ConversationList = ({
   activeConversation, 
   onConversationSelect, 
   onNewDocumentAnalysis,
-  user
+  user,
+  onLogout
 }) => {
   const getDocumentTypeColor = (type) => {
     const typeColors = {
@@ -85,13 +86,24 @@ const ConversationList = ({
         )}
       </div>
 
-      {/* User Section */}
+{/* User Section */}
       <div className="legaleaze-user-section">
         <div className="legaleaze-user-avatar">{user?.initials || "U"}</div>
         <div className="legaleaze-user-info">
           <div className="legaleaze-user-name">{user?.name || "User"}</div>
           <div className="legaleaze-user-plan">{user?.plan || "Free plan"}</div>
         </div>
+        {onLogout && (
+          <Button
+            onClick={onLogout}
+            variant="ghost"
+            size="sm"
+            className="ml-2 text-gray-500 hover:text-gray-700"
+            title="Logout"
+          >
+            <ApperIcon name="LogOut" className="w-4 h-4" />
+          </Button>
+        )}
       </div>
     </div>
   );
