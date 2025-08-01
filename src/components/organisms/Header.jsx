@@ -1,20 +1,21 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
-const Header = ({ user }) => {
+function Header({ user }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
+const navigate = useNavigate();
+  
+  const isDashboard = Boolean(user);
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
   };
 
-  // Show different header based on whether user data is provided (dashboard vs marketing)
-  const isDashboard = Boolean(user);
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   return (
     <>
@@ -26,7 +27,10 @@ const Header = ({ user }) => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center space-x-3">
+<div 
+            className="flex items-center space-x-3 cursor-pointer transition-opacity hover:opacity-80"
+            onClick={() => navigate('/')}
+          >
             <motion.div 
               className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center"
               whileHover={{ scale: 1.05 }}
