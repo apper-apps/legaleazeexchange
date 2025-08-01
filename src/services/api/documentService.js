@@ -333,9 +333,7 @@ class DocumentService {
 
   getCurrentAccount() {
     return this.currentAccount;
-  }
 }
-
-export const documentService = new DocumentService();
+}
 
 export const documentService = new DocumentService();
