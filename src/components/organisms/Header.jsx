@@ -31,12 +31,12 @@ const Header = () => {
             >
               <ApperIcon name="Scale" className="w-6 h-6 text-white" />
             </motion.div>
-            <div>
+<div>
               <h1 className="text-2xl font-bold bg-gradient-to-r from-primary-900 to-primary-700 bg-clip-text text-transparent">
                 Legaleaze
               </h1>
               <p className="text-sm text-primary-600 -mt-1">
-                Legal documents in plain English
+                Sign with confidence
               </p>
             </div>
           </div>
