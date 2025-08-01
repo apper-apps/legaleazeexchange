@@ -6,9 +6,9 @@ import { cn } from "@/utils/cn";
 import { toast } from "react-toastify";
 
 const ChatInput = ({ 
-  onSendMessage, 
+onSendMessage, 
   disabled = false, 
-  placeholder = "Type your message...",
+  placeholder = "How can I help you today?",
   showFileUpload = true 
 }) => {
   const [message, setMessage] = useState("");
@@ -112,7 +112,7 @@ const ChatInput = ({
       className="relative"
     >
       {/* File Upload Input */}
-      <input
+<input
         id="file-input"
         ref={fileInputRef}
         type="file"
@@ -132,78 +132,47 @@ const ChatInput = ({
       )}
 
       {/* Chat Input Form */}
-      <form onSubmit={handleSubmit} className="relative">
-        <div 
-          className={cn(
-            "bg-gray-100 rounded-xl border transition-all duration-200",
-            isDragOver ? "border-blue-300 bg-blue-50" : "border-gray-300 focus-within:border-blue-500",
-            disabled && "opacity-50"
-          )}
-          onDrop={handleDrop}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-        >
-          <div className="flex items-end space-x-2 p-3">
-            {/* File Upload Button */}
+<div className="input-container">
+        <form onSubmit={handleSubmit} className="relative">
+          <textarea
+            ref={textareaRef}
+            value={message}
+            onChange={handleTextareaChange}
+            onKeyDown={handleKeyDown}
+            placeholder={placeholder}
+            disabled={disabled}
+            rows={1}
+            className="chat-input"
+            style={{ height: 'auto' }}
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+          />
+          <div className="input-actions">
             {showFileUpload && (
-              <Button
+              <button
                 type="button"
-                variant="ghost"
-                size="sm"
+                className="action-btn"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={disabled}
-                className="text-gray-500 hover:text-blue-600 hover:bg-blue-50 p-2"
               >
-                <ApperIcon name="Paperclip" size={20} />
-              </Button>
+                +
+              </button>
             )}
-
-            {/* Text Input */}
-            <textarea
-              ref={textareaRef}
-              value={message}
-              onChange={handleTextareaChange}
-              onKeyDown={handleKeyDown}
-              placeholder={placeholder}
-              disabled={disabled}
-              rows={1}
-              className={cn(
-                "flex-1 bg-transparent border-0 resize-none outline-none placeholder-gray-500 text-gray-900",
-                "min-h-[24px] max-h-[120px] py-1",
-                disabled && "cursor-not-allowed"
-              )}
-              style={{ height: 'auto' }}
-            />
-
-            {/* Send Button */}
-            <Button
+            <button
               type="submit"
-              variant="primary"
-              size="sm"
+              className="action-btn"
               disabled={!message.trim() || disabled}
-              className="p-2 min-w-0"
             >
               {disabled ? (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
               ) : (
-                <ApperIcon name="Send" size={18} />
+                "⚡"
               )}
-            </Button>
+            </button>
           </div>
-        </div>
-
-        {/* Helper Text */}
-        <div className="flex items-center justify-between mt-2 px-1">
-          <p className="text-xs text-gray-500">
-            Press Enter to send, Shift+Enter for new line
-          </p>
-          {showFileUpload && (
-            <p className="text-xs text-gray-400">
-              Support: PDF, DOC, DOCX (max 10MB)
-            </p>
-          )}
-        </div>
-      </form>
+        </form>
+      </div>
     </motion.div>
   );
 };
