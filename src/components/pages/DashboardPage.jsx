@@ -1,135 +1,37 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import ApperIcon from "@/components/ApperIcon";
-import Header from "@/components/organisms/Header";
-import ConversationList from "@/components/organisms/ConversationList";
-import ChatArea from "@/components/organisms/ChatArea";
+import React, { useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
 import { documentService } from "@/services/api/documentService";
-import { toast } from "react-toastify";
+import Sidebar from "@/components/Sidebar";
 
 const DashboardPage = () => {
   const [conversations, setConversations] = useState([]);
   const [activeConversation, setActiveConversation] = useState(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [chatInput, setChatInput] = useState("");
   const [loading, setLoading] = useState(false);
-
-  // Mock user data - in real app this would come from auth context
-  const user = {
-    name: "John Smith",
-    email: "john@example.com",
-    initials: "JS",
-    plan: "Personal Plan"
-  };
-
-  // Mock conversations data - in real app this would come from API
-  const mockConversations = [
-    {
-      Id: 1,
-      title: "Apartment Lease Agreement",
-      preview: "Found 3 red flags including hidden fees and early termination penalties",
-      timestamp: "2 hours ago",
-      documentType: "Rental Agreement",
-      status: "analyzed",
-      riskLevel: "high",
-      messages: [
-        {
-          id: 1,
-          type: "system",
-          content: "Document uploaded and analyzed successfully",
-          timestamp: new Date(Date.now() - 7200000)
-        },
-        {
-          id: 2,
-          type: "ai",
-          content: "I've analyzed your apartment lease agreement. I found several important issues you should be aware of:\n\n**Red Flags Detected:**\n1. **Hidden Pet Fee**: There's a $300 non-refundable pet deposit that's not clearly disclosed upfront\n2. **Early Termination Penalty**: You'll pay 2 months rent if you break the lease early\n3. **Automatic Rent Increases**: Rent can increase by up to 5% annually without additional notice\n\nWould you like me to explain any of these in more detail?",
-          timestamp: new Date(Date.now() - 7000000)
-        }
-      ]
-    },
-    {
-      Id: 2,
-      title: "Employment Contract Review",
-      preview: "Non-compete clause may be too restrictive for your industry",
-      timestamp: "Yesterday",
-      documentType: "Employment Contract",
-      status: "analyzed",
-      riskLevel: "medium",
-      messages: [
-        {
-          id: 1,
-          type: "system",
-          content: "Document uploaded and analyzed successfully",
-          timestamp: new Date(Date.now() - 86400000)
-        },
-        {
-          id: 2,
-          type: "ai",
-          content: "I've reviewed your employment contract. Overall it's fairly standard, but there are a few areas of concern:\n\n**Key Findings:**\n1. **Non-compete clause** restricts you from working in similar roles for 18 months\n2. **Intellectual property** clause is broader than typical\n3. **Termination notice** period is 30 days (standard)\n\nThe non-compete duration seems excessive for your industry. Would you like suggestions on how to negotiate this?",
-          timestamp: new Date(Date.now() - 86000000)
-        }
-      ]
-    },
-    {
-      Id: 3,
-      title: "Divorce Settlement Draft",
-      preview: "Asset division appears fair, but child support calculation needs review",
-      timestamp: "3 days ago",
-      documentType: "Divorce Document",
-      status: "analyzed",
-      riskLevel: "medium",
-      messages: [
-        {
-          id: 1,
-          type: "system",
-          content: "Document uploaded and analyzed successfully",
-          timestamp: new Date(Date.now() - 259200000)
-        },
-        {
-          id: 2,
-          type: "ai",
-          content: "I've carefully reviewed your divorce settlement agreement. Here's what I found:\n\n**Asset Division**: Fair 50/50 split of marital assets\n**Child Support**: Current calculation may be below state guidelines\n**Custody Schedule**: Standard alternating weekends with holiday provisions\n\nI recommend having the child support calculation verified as it appears to be about $200/month below the typical amount for your income level.",
-          timestamp: new Date(Date.now() - 258000000)
-        }
-      ]
-    }
-  ];
-
-  useEffect(() => {
-    setConversations(mockConversations);
-    // Set first conversation as active by default
-    if (mockConversations.length > 0) {
-      setActiveConversation(mockConversations[0]);
-    }
-  }, []);
+  const [user] = useState({ name: "Ricky" });
 
   const handleNewDocumentAnalysis = () => {
-    // Create new conversation for document upload
     setActiveConversation(null);
-    setSidebarOpen(false); // Close sidebar on mobile after selection
+    setChatInput("");
+    toast.info("Ready for new document upload");
   };
 
   const handleConversationSelect = (conversation) => {
     setActiveConversation(conversation);
-    setSidebarOpen(false); // Close sidebar on mobile after selection
   };
 
   const handleSendMessage = async (message, file = null) => {
-    if (!activeConversation && !file) {
-      toast.error("Please upload a document or select a conversation first");
-      return;
-    }
+    if (!message.trim() && !file) return;
 
-    // Handle file upload and create new conversation
-    if (file) {
-      setLoading(true);
-      try {
-        // Upload document
+    setLoading(true);
+    try {
+      if (file) {
+        // Handle file upload and create new conversation
         const document = await documentService.uploadDocument(file);
         
-        // Create new conversation
         const newConversation = {
           Id: Date.now(),
-          title: file.name,
+          title: document.name || "New Document",
           preview: "Analyzing document...",
           timestamp: "Just now",
           documentType: "Document",
@@ -139,185 +41,200 @@ const DashboardPage = () => {
             {
               id: 1,
               type: "system",
-              content: `Document "${file.name}" uploaded successfully`,
+              content: `Document "${document.name}" uploaded successfully`,
               timestamp: new Date()
             },
             {
               id: 2,
-              type: "user",
+              type: "user", 
               content: message || "Please analyze this document",
               timestamp: new Date()
             },
             {
               id: 3,
               type: "ai",
-              content: "I'm analyzing your document now. This should take just a moment...",
+              content: "I'm analyzing your document now. This may take a few moments...",
               timestamp: new Date(),
               isTyping: true
             }
           ]
         };
 
-        // Add to conversations and set as active
         setConversations(prev => [newConversation, ...prev]);
         setActiveConversation(newConversation);
 
         // Simulate analysis
         setTimeout(async () => {
           try {
-            const analysis = await documentService.analyzeDocument(document.Id);
+            const analysis = await documentService.analyzeDocument(document.id);
             
-            // Update conversation with analysis results
             const analysisMessage = {
               id: 4,
               type: "ai",
-              content: `I've completed the analysis of your document. Here are the key findings:\n\n${analysis.sections.map(section => 
-                `**${section.title}**: ${section.explanation}`
-              ).join('\n\n')}\n\nWould you like me to explain any of these sections in more detail?`,
+              content: `Analysis complete! Here's what I found:\n\n**Document Type**: ${analysis.type}\n**Risk Level**: ${analysis.riskLevel}\n**Key Issues**: ${analysis.summary}\n\nWould you like me to explain any of these findings in detail?`,
               timestamp: new Date(),
               isTyping: false
             };
 
-            setConversations(prev => prev.map(conv => 
-              conv.Id === newConversation.Id 
-                ? {
-                    ...conv,
-                    status: "analyzed",
-                    riskLevel: analysis.sections.some(s => s.importance === "high") ? "high" : "medium",
-                    preview: analysis.plainEnglish.substring(0, 80) + "...",
-                    messages: [...conv.messages.slice(0, -1), analysisMessage]
-                  }
-                : conv
-            ));
-
-            setActiveConversation(prev => prev ? {
-              ...prev,
-              status: "analyzed",
-              riskLevel: analysis.sections.some(s => s.importance === "high") ? "high" : "medium",
-              preview: analysis.plainEnglish.substring(0, 80) + "...",
-              messages: [...prev.messages.slice(0, -1), analysisMessage]
-            } : null);
-
-            toast.success("Document analyzed successfully!");
+            setConversations(prev => 
+              prev.map(conv => 
+                conv.Id === newConversation.Id 
+                  ? {
+                      ...conv,
+                      status: "analyzed",
+                      riskLevel: analysis.riskLevel,
+                      preview: analysis.summary,
+                      messages: [...conv.messages.slice(0, -1), analysisMessage]
+                    }
+                  : conv
+              )
+            );
           } catch (error) {
-            console.error("Analysis failed:", error);
-            toast.error("Failed to analyze document");
+            toast.error("Analysis failed. Please try again.");
           }
         }, 3000);
 
-      } catch (error) {
-        console.error("Upload failed:", error);
-        toast.error("Failed to upload document");
-      } finally {
-        setLoading(false);
-      }
-    } else if (activeConversation) {
-      // Add user message to existing conversation
-      const userMessage = {
-        id: Date.now(),
-        type: "user",
-        content: message,
-        timestamp: new Date()
-      };
-
-      const aiResponse = {
-        id: Date.now() + 1,
-        type: "ai",
-        content: "I'm processing your question. Let me review the document details...",
-        timestamp: new Date(),
-        isTyping: true
-      };
-
-      // Update active conversation
-      const updatedConversation = {
-        ...activeConversation,
-        messages: [...activeConversation.messages, userMessage, aiResponse]
-      };
-
-      setActiveConversation(updatedConversation);
-      setConversations(prev => prev.map(conv => 
-        conv.Id === activeConversation.Id ? updatedConversation : conv
-      ));
-
-      // Simulate AI response
-      setTimeout(() => {
-        const finalResponse = {
-          ...aiResponse,
-          content: "Based on your document, here's what I can tell you: " + message.toLowerCase().includes('explain') 
-            ? "Let me break down that section in simpler terms. This clause means that you are responsible for any damages that occur, but only up to the amount you've paid under this contract. It's a way to limit how much you could owe if something goes wrong."
-            : "That's a great question. From what I can see in your document, this appears to be a standard clause that protects both parties involved. Would you like me to explain any specific part in more detail?",
-          isTyping: false
+      } else if (activeConversation) {
+        // Add message to existing conversation
+        const userMessage = {
+          id: Date.now(),
+          type: "user",
+          content: message,
+          timestamp: new Date()
         };
 
-        setActiveConversation(prev => prev ? {
-          ...prev,
-          messages: prev.messages.map(msg => msg.id === aiResponse.id ? finalResponse : msg)
-        } : null);
+        const aiResponse = {
+          id: Date.now() + 1,
+          type: "ai", 
+          content: "I'm processing your question...",
+          timestamp: new Date(),
+          isTyping: true
+        };
 
-        setConversations(prev => prev.map(conv => 
-          conv.Id === activeConversation.Id 
-            ? {
-                ...conv,
-                messages: conv.messages.map(msg => msg.id === aiResponse.id ? finalResponse : msg)
-              }
-            : conv
-        ));
-      }, 2000);
+        const updatedConversation = {
+          ...activeConversation,
+          messages: [...activeConversation.messages, userMessage, aiResponse]
+        };
+
+        setConversations(prev => 
+          prev.map(conv => conv.Id === activeConversation.Id ? updatedConversation : conv)
+        );
+        setActiveConversation(updatedConversation);
+
+        // Simulate AI response
+        setTimeout(() => {
+          const finalResponse = {
+            ...aiResponse,
+            content: file ? 
+              "I've analyzed your new document. Here are the key findings..." :
+              "Based on your question about the document, here's what I can tell you...",
+            isTyping: false
+          };
+
+          const finalConversation = {
+            ...updatedConversation,
+            messages: [...updatedConversation.messages.slice(0, -1), finalResponse]
+          };
+
+          setConversations(prev => 
+            prev.map(conv => conv.Id === activeConversation.Id ? finalConversation : conv)
+          );
+          setActiveConversation(finalConversation);
+        }, 2000);
+      }
+
+      setChatInput("");
+      toast.success(file ? "Document uploaded successfully" : "Message sent");
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
+  const handleInputChange = (e) => {
+    setChatInput(e.target.value);
+    // Auto-resize
+    e.target.style.height = 'auto';
+    e.target.style.height = Math.min(e.target.scrollHeight, 200) + 'px';
+  };
+
   return (
-    <div className="h-screen bg-gray-50 flex flex-col">
-      {/* Header */}
-      <Header user={user} />
+    <div className="legaleaze-dashboard">
+      {/* Sidebar */}
+      <Sidebar
+        conversations={conversations}
+        activeConversation={activeConversation}
+        onConversationSelect={handleConversationSelect}
+        onNewChat={handleNewDocumentAnalysis}
+        user={user}
+      />
       
-      {/* Main Dashboard Layout */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Mobile Sidebar Overlay */}
-        {sidebarOpen && (
-          <div 
-            className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
-            onClick={() => setSidebarOpen(false)}
-          />
-        )}
-
-        {/* Left Sidebar - Conversation History */}
-        <motion.aside
-          initial={{ x: -320 }}
-          animate={{ x: sidebarOpen ? 0 : -320 }}
-          transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="fixed lg:relative z-50 lg:z-0 w-80 h-full bg-white border-r border-gray-200 lg:translate-x-0"
-        >
-          <ConversationList
-            conversations={conversations}
-            activeConversation={activeConversation}
-            onConversationSelect={handleConversationSelect}
-            onNewDocumentAnalysis={handleNewDocumentAnalysis}
-          />
-        </motion.aside>
-
-        {/* Main Chat Area */}
-        <main className="flex-1 flex flex-col min-w-0">
-          {/* Mobile Header */}
-          <div className="lg:hidden bg-white border-b border-gray-200 p-4 flex items-center">
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="p-2 rounded-lg hover:bg-gray-100 mr-3"
-            >
-              <ApperIcon name="Menu" size={20} className="text-gray-600" />
-            </button>
-            <h1 className="font-semibold text-gray-900">
-              {activeConversation ? activeConversation.title : "New Document Analysis"}
-            </h1>
+      {/* Main Content */}
+      <main className="legaleaze-main-content">
+        {/* Model Selector */}
+        <div className="legaleaze-model-selector">
+          Legaleaze AI ▼
+        </div>
+        
+        {/* Main Header */}
+        <div className="legaleaze-main-header">
+          <h1 className="legaleaze-greeting">
+            <span className="legaleaze-greeting-icon">✨</span>
+            Evening, Ricky
+          </h1>
+        </div>
+        
+        {/* Chat Container */}
+        <div className="legaleaze-chat-container">
+          <div className="legaleaze-input-container">
+            <textarea
+              className="legaleaze-chat-input"
+              placeholder="How can I help you today?"
+              rows="1"
+              value={chatInput}
+              onChange={handleInputChange}
+              disabled={loading}
+            />
+            <div className="legaleaze-input-actions">
+              <button 
+                className="legaleaze-action-btn"
+                onClick={() => document.getElementById('file-input')?.click()}
+                title="Upload document"
+              >
+                +
+              </button>
+              <button 
+                className="legaleaze-action-btn"
+                onClick={() => handleSendMessage(chatInput)}
+                disabled={!chatInput.trim() || loading}
+                title="Send message"
+              >
+                ⚡
+              </button>
+              <button 
+                className="legaleaze-action-btn"
+                title="Search"
+              >
+                🔍
+              </button>
+            </div>
+            <input
+              id="file-input"
+              type="file"
+              accept=".pdf,.doc,.docx,.txt"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  handleSendMessage("Please analyze this document", file);
+                }
+              }}
+            />
           </div>
-
-          <ChatArea
-            conversation={activeConversation}
-            onSendMessage={handleSendMessage}
-            loading={loading}
-          />
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   );
 };

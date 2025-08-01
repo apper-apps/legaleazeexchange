@@ -7,7 +7,7 @@ import SignInPage from '@/components/pages/SignInPage'
 function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-gray-50">
+<div className="min-h-screen" style={{ background: '#fafafa' }}>
 <Routes>
         <Route path="/" element={<DashboardPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
